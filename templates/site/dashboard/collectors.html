@@ -1,0 +1,50 @@
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body> -->
+    {% extends './master.html' %}
+    {% block content %}
+
+    <br><br>
+<div class="container">   
+
+  
+  <a href='/register-collectors'> Add Collector </a>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Email</th>
+        <th>Username</th>
+         
+      </tr>
+    </thead>
+    <tbody>
+    
+      {% for collector in list %}
+      <tr>
+        <td>{{collector.first_name}}</td>
+        <td>{{collector.last_name}}</td>
+        <td>{{collector.email}}</td>
+        <td>{{collector.username}}</td>
+
+      </tr>  
+      {% endfor %}
+      
+     
+      
+    </tbody>
+  </table>
+</div>
+{% endblock content %}
+<!-- </body>
+</html> -->
