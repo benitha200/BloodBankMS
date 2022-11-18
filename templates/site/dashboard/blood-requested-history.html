@@ -80,11 +80,13 @@
               <td>{{list.blood_quantity}}</td>
               <td id="status"> {{list.status}}
                 
-                {% comment %} <script>
-                      
-                if ({{list.status}}= 1){
+                {% comment %}
+                
+               <script>
+                      let n= {{list.status}}
+                if (n= 1){
                     document.getElementById("status").innerHTML="Accepted"
-                    console.write({{list.status}})
+              
                 }
                 else{
                     document.getElementById("status").innerHTML="Rejected"

@@ -45,7 +45,8 @@ def hospitallogin(request):
     
 
 def signup(request):
-     if(request.method=='POST'):
+     if(request.method=='POST'): 
+        first_name = request.POST.get('first_name')
         username=request.POST.get('username')
         email=request.POST.get('email')
         password=request.POST.get('password')
@@ -62,7 +63,7 @@ def signup(request):
              if(group.exists):
                 group = Group.objects.get(name="hospital")
                 users = User.objects.create_user(
-                                        email=email, password=password, username=username)
+                                        first_name=first_name, email=email, password=password, username=username)
                 users.save()
                 users.groups.add(group)
 

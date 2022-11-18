@@ -51,8 +51,10 @@
 
 <div class="container">
  
-  <a href='/hospital-request'> Make Request </a>
-    <div class="row">
+ <button class="btn btn-secondary"> <a href='/hospital-request' style="color:white;"> Make Request </a></button>
+ <br>
+ <br>   
+ <div class="row">
       <div class="col-12">
         <table class="table table-bordered">
           <thead>
@@ -67,7 +69,7 @@
             
               {% for list in requests %}
               <tr>
-              <td>{{list.hospital_id}}</td>
+              <td>H-0{{list.hospital_id}}</td>
               <td>{{list.blood_type}}</td>
               <td>{{list.blood_quantity}}</td>
               </tr>
