@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'donor',
     'patient',
     'mysite',
+    'patients',
+
 ]
 
 MIDDLEWARE = [

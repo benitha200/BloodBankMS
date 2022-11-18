@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+  {% load static %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,24 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.css">
+
+
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <title>Blood Bank Management System</title>
+      <link rel="shortcut icon" href="assets/images/fav.png" type="image/x-icon">
+      <link href="https://fonts.googleapis.com/css?family=Merriweather&display=swap" rel="stylesheet">
+      <link rel="shortcut icon" href="assets/images/fav.jpg">
+  
+      <link href="{% static "assets/css/bootstrap.min.css" %}"rel="stylesheet" media="all">
+      <link href="{% static "assets/css/fontawsom-all.min.css" %}"rel="stylesheet" media="all">
+      <link href="{% static "assets/plugins/grid-gallery/css/grid-gallery.min.css" %}"rel="stylesheet" media="all">
+      <link href="{% static "assets/css/style.css" %}"rel="stylesheet" media="all">
+  <!--    -->
+  <!--    <link rel="stylesheet" href="assets/css/bootstrap.min.css">-->
+  <!--    <link rel="stylesheet" href="assets/css/fontawsom-all.min.css">-->
+  <!--    <link rel="stylesheet" href="assets/plugins/grid-gallery/css/grid-gallery.min.css">-->
+  <!--    <link rel="stylesheet" type="text/css" href="assets/css/style.css" />-->
 
     <style>
     .row{
@@ -61,9 +80,10 @@ body{
 .wrapper .sidebar{
   width: 200px;
   height: 100%;
-  background: 	#343a40;
+  background: #e2e3e5;
   padding: 30px 0px;
   position: fixed;
+  color: black;
 }
 
 .wrapper .sidebar h2{
@@ -81,7 +101,7 @@ body{
 }    
 
 .wrapper .sidebar ul li a{
-  color: #dedede;
+  color: black;
   display: block;
 }
 
@@ -90,7 +110,7 @@ body{
 }
 
 .wrapper .sidebar ul li:hover{
-  background-color: #7a7a7a;
+  background-color: #d6d8d9;
 }
     
 .wrapper .sidebar ul li:hover a{
@@ -152,22 +172,26 @@ body{
 
     </style>
 </head>
-<body>
 
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-danger">
+<body>
+  <header>
+    {% include "../includes/header2Top.html" %}
+  </header>
+
+    {% comment %} <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-danger">
         <a style="color:white;" class="navbar-brand" href="/"><i class="fa fa-heartbeat"></i>&nbsp;<font face = "Comic sans MS" size ="4">Blood Bank Management System</font></a>
         
       
         <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
+                    <p style="color:white;text-decoration: underline;"> Welcome {{request.user.username}} </p>
                     <a class="nav-link" style="color: white;" href="/logout">Logout &nbsp; <i class="fas fa-power-off"></i></a>
                 </li>
                 
             </ul>
         </div>
-      </nav>
-<br><br>
+      </nav> {% endcomment %}
 <div class="wrapper">
     <div class="sidebar">
         
@@ -175,24 +199,26 @@ body{
           {% if user.is_authenticated %}
           <li><a style="text-decoration:none;" href="/dashboard"><i class="fas fa-home"></i>Dashboard</a></li>
             
-            {% comment %} {% if user.groups.first.name == 'admin'  %} {% endcomment %}
-                <li><a style="text-decoration:none;" href=""><i class="fas fa-user"></i>Collectors</a></li>
-                <li><a style="text-decoration:none;" href=""><i class="fas fa-sync-alt"></i>Blood Requested</a></li>
-                <li><a style="text-decoration:none;" href=""><i class="fas fa-hand-holding-water"></i>Blood Stock</a></li>
-            {% comment %} {% endif %} {% endcomment %}
+            {% comment %} RBC Admin {% endcomment %}
+            {% if  user.groups.first.name == 'Admin'%}
+                <li><a style="text-decoration:none;" href="/collectors"><i class="fas fa-user"></i>Collectors</a></li>
+                <li><a style="text-decoration:none;" href="/blood-requested"><i class="fas fa-sync-alt"></i>Blood Requested</a></li>
+                <li><a style="text-decoration:none;" href="/rbc-stock"><i class="fas fa-hand-holding-water"></i>Blood Stock</a></li>
+            {% endif %}
           <!-- hospital-->
-            {% comment %} {% if user.groups.first.name == "hospital" %} {% endcomment %}
+          
+            {% if user.groups.first.name == 'Hospital' %}
             
-                <li><a style="text-decoration:none;" href=""><i class="fas fa-sync-alt"></i>Request</a></li>
-                <li><a style="text-decoration:none;" href=""><i class="fas fa-sync-alt"></i>Blood Requested</a></li>
+                <li><a style="text-decoration:none;" href="/patients"><i class="fas fa-hand-holding-medical"></i>patients</a></li>
+                <li><a style="text-decoration:none;" href="/blood-request"><i class="fas fa-sync-alt"></i>Blood Request</a></li>
                 <li><a style="text-decoration:none;" href=""><i class="fas fa-sync-alt"></i>Achieved</a></li>
-            {% comment %} {% endif %} {% endcomment %}
-                
-            {% comment %} {% if user.groups.first.name == 'collector' %} {% endcomment %}
+            {% endif %}
+                {% comment %} <p style="color:skyblue;"> Collectors</p> {% endcomment %}
+            {% if user.groups.first.name == 'Collector' %}
                                            <!-- collector -->
-                <li><a style="text-decoration:none;" href=""><i class="fas fa-hand-holding-medical"></i>Donors</a></li>
-                <li><a style="text-decoration:none;" href=""><i class="fas fa-history"></i>History</a></li> 
-            {% comment %} {% endif %} {% endcomment %}
+                <li><a style="text-decoration:none;" href="/donors"><i class="fas fa-hand-holding-medical"></i>Donors</a></li>
+                <li><a style="text-decoration:none;" href="/donors"><i class="fas fa-history"></i>History</a></li> 
+            {% endif %}
           
           {% endif %}
           </ul> 
@@ -202,6 +228,7 @@ body{
 
 
 {% block content %}
+
 
 {% endblock content %}
 

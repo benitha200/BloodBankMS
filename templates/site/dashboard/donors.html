@@ -17,7 +17,7 @@
 <div class="container">   
 
   
-  <a href='/donors/register-donors'> Add Donors </a>
+  <button class="btn btn-secondary" style="color:white;"><a href='/donors/register-donors'> Add Donors </a></button><br><br>
   <table class="table table-bordered">
     <thead>
       <tr>
@@ -31,10 +31,9 @@
       </tr>
     </thead>
     <tbody>
-    
       {% for list in list %}
       <tr>
-        <td>{{list.donor_id}}<td>
+        <td>{{list.donor_id}}</td>
         <td>{{list.first_name}}</td>
         <td>{{list.last_name}}</td>
         <td>{{list.phone_number}}</td>
@@ -42,10 +41,7 @@
         <td>{{list.blood_quantity}}</td>
 
       </tr>  
-      {% endfor %}
-      
-     
-      
+      {% endfor %}  
     </tbody>
   </table>
 </div>

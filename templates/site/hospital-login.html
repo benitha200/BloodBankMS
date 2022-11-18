@@ -1,4 +1,3 @@
-{% extends './master.html' %}
 {%load static%}
 {% load widget_tweaks %}
 <!DOCTYPE html>
@@ -32,19 +31,16 @@
   </head>
   <body>
      <header class="continer-fluid ">
-             {% include "../includes/headerTop.html" %}
+             {% include "./includes/headerTop.html" %}
           
         </header>
 
-        {% block content %}
-        <br>
-        <br>
-
-    <div class="page-wrapper bg-gra-03 p-t-45 p-b-50" style="width:80%;margin: auto;font-style:Arial;font-size:15px;">
-        <div class="wrapper wrapper--w1000">
-            <div class="card card-5">
+    <div class="page-wrapper bg-gra-03 p-t-45 p-b-50">
+        <div class="wrapper wrapper--w790">
+            <br><br><br>
+            <div class="card card-5" style="width:70%;margin:auto;">
                 <div class="card-heading">
-                    <h2 class="title">Make Blood Request</h2>
+                    <h2 class="title">Hospitals Login</h2>
                 </div>
                 {% for message in messages %}
     
@@ -57,44 +53,31 @@
                 <div class="card-body">
                     <form method="POST" >
                         {% csrf_token %}
-                        
+
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                              <span class="input-group-text" id="basic-addon1"><i class="fas fa-tint"></i></span>
+                              <span class="input-group-text" id="basic-addon1"><i class="fas fa-user"></i></span>
                             </div>
-                            {% comment %} <input type="text" name="phone_number" class="form-control" placeholder="Phone Number" aria-label="Body Weight" aria-describedby="basic-addon1"> {% endcomment %}
-                            <select name="blood_type" class="form-control">
-                                <option value="A+">A+</option>
-                                <option value="A-">A-</option>
-                                <option value="B+">B+</option>
-                                <option value="B-">B-</option>
-                                <option value="AB+">AB+</option>
-                                <option value="AB-">AB-</option>
-                                <option value="O+">O+</option>
-                                <option value="O-">O-</option>
-                              </select>
-                        
+                            <input type="text" name="username" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                          </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="basic-addon1"><i class="fas fa-key"></i></span>
+                            </div>
+                            <input type="password" name="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
                         </div>
 
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text" id="basic-addon1"><i class="fas fa-heartbeat"></i></span>
-                            </div>
-                            <input type="text" name="blood_quantity" class="form-control" placeholder="Blood Quantity (ml)" aria-label="Blood Quantity" aria-describedby="basic-addon1">
-                          </div>
-                        
-
                         <div class="text-center">
-                            <button class="btn btn--radius-2 btn-danger btn-block" type="submit">Request</button>
+                            <button class="btn btn--radius-2 btn-danger btn-block" type="submit">Login</button>
                         </div>
                     </form>
                     <br>
+                    <p style="text-align: center;">Don't have an account? <a style="text-decoration: none;" href="/signup">Register Now</a></p>
+
                 </div>
             </div>
         </div>
     </div>
-
-    {% endblock %}
 
 {% include "blood/footer.html" %}
 <!-- Optional JavaScript -->

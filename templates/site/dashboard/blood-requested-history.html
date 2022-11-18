@@ -50,15 +50,14 @@
 
 
 <div class="container">
-
-  {% for message in messages %}
+    {% for message in messages %}
     
-  <div class="alert alert-success">
-      <a class="close" href="#" data-dismiss="alert">×</a>
-               {{ message }}
-  </div>
+    <div class="alert alert-success">
+        <a class="close" href="#" data-dismiss="alert">×</a>
+                 {{ message }}
+    </div>
 
-              {% endfor %}
+                {% endfor %}
 
  
     <div class="row">
@@ -79,11 +78,21 @@
               <td>H-0{{list.hospital_id}}</td>
               <td>{{list.blood_type}}</td>
               <td>{{list.blood_quantity}}</td>
-              <td>
-                {% comment %} <button type="button" class="btn btn-primary"><i class="far fa-eye"></i></button> {% endcomment %}
-                <button type="button" class="btn btn-secondary" style="background-color:#5cb85c;"><a href="{% url 'accept' id=list.id %}">Accept</a></i></button>
-              <button type="button" class="btn btn-danger"><a href="{% url 'reject' id=list.id %}">Reject</a></button>
-              </td>
+              <td id="status"> {{list.status}}
+                
+                {% comment %} <script>
+                      
+                if ({{list.status}}= 1){
+                    document.getElementById("status").innerHTML="Accepted"
+                    console.write({{list.status}})
+                }
+                else{
+                    document.getElementById("status").innerHTML="Rejected"
+                }
+                 
+              </script> {% endcomment %}
+               </td>
+             
             </tr>
               {% endfor %}
             

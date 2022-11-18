@@ -26,6 +26,22 @@ def login(request):
             messages.error(request,'username or password not correct')
             return redirect('login')
     return render(request, 'site/login.html')
+
+def hospitallogin(request):
+    if(request.method=='POST'):
+        username=request.POST.get('username')
+        password=request.POST.get('password')
+        print(username+" "+password)
+        user = authenticate(username=username,password=password)
+        # print(user.is_active)
+        if user is not None:
+                loginFrom(request,user)
+                return redirect('dashboard')
+        else:
+            messages.error(request,'username or password not correct')
+            return redirect('login')
+    return render(request, 'site/hospital-login.html')
+
     
 
 def signup(request):
@@ -91,7 +107,7 @@ def dashboard(request):
     return render(request,'site/dashboard/dashboard.html',context)
 
 def collectors(request):
-    list = User.objects.all()
+    list= User.objects.filter(group__name ='Collector')
     context= {'list':list}
     return render(request,'site/dashboard/collectors.html',context)
 
@@ -121,7 +137,7 @@ def registercollectors(request):
                 users.groups.add(group)
 
                 messages.error(request,'account created')
-                return redirect('./collector')
+                return redirect('/collectors')
              else:
                 messages.error(request,'something went wrong')
                 return redirect('register-collector')   
@@ -154,7 +170,7 @@ def registerdonors(request):
             # do= int(do) + 1
             donor_id = "D-0" + str(do)
         else:
-            donor_id = "D00001"
+            donor_id = "D-00"
 
         donors= models.Donors(
             donor_id = donor_id,
@@ -253,9 +269,16 @@ def bloodrequest(request):
 
 def bloodrequested(request):
 
-    requests = models.HospitalRequests.objects.all()
+    requests = models.HospitalRequests.objects.filter(status=0)
     context = {'requests':requests}
     return render(request,'site/dashboard/blood-requested.html',context)
+
+def bloodrequestedhistory(request):
+
+    requests = models.HospitalRequests.objects.filter(~Q(status=0))
+    context = {'requests':requests}
+    return render(request,'site/dashboard/blood-requested-history.html',context)
+
 # def hospitalrequest(request):
 #     return render(request,'site/forms/hospital-request-form.html')
 
@@ -280,3 +303,23 @@ def hospitalrequest(request):
         return redirect('/blood-request')
     else:
         return render(request, 'site/forms/hospital-request-form.html')
+
+def accept(request,id):
+    requested =models.HospitalRequests.objects.get(id = id)
+    requested.status = 1
+    stock = models.RbcStock.objects.get(blood_type= requested.blood_type)
+    # if (stock.blood_quantity - requested.blood_quantity):
+        # messages.error(request,'Insufficient stock')
+        # print("<script>alert('Insufficient ')</script>")
+    # else:
+    stock.blood_quantity = stock.blood_quantity - requested.blood_quantity
+    stock.save()
+    requested.save()
+    return redirect('/blood-requested')
+
+def reject(request,id):
+    requested = models.HospitalRequests.objects.get(id= id)
+    requested.status = 2
+    requested.save()
+    return redirect('/blood-requested')
+    

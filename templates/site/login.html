@@ -38,7 +38,7 @@
     <div class="page-wrapper bg-gra-03 p-t-45 p-b-50">
         <div class="wrapper wrapper--w790">
             <br><br><br>
-            <div class="card card-5" style="width:60%;margin:auto;">
+            <div class="card card-5" style="width:70%;margin:auto;">
                 <div class="card-heading">
                     <h2 class="title">Users Login</h2>
                 </div>
@@ -53,24 +53,18 @@
                 <div class="card-body">
                     <form method="POST" >
                         {% csrf_token %}
-                        <div class="form-row">
-                            <div class="name">Username</div>
-                            <div class="value">
-                                <div class="input-group">
-                                    <input type="text" name="username" class="input--style-5" id="" placeholder="enter username">
 
-                                    <!-- {% render_field form.username class="input--style-5"%} -->
-                                </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="basic-addon1"><i class="fas fa-user"></i></span>
                             </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="name">Password</div>
-                            <div class="value">
-                                <div class="input-group">
-                                    <input type="password" name="password" class="input--style-5" id="" placeholder="enter password">
-                                    <!-- {% render_field form.password class="input--style-5" %} -->
-                                </div>
+                            <input type="text" name="username" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                          </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="basic-addon1"><i class="fas fa-key"></i></span>
                             </div>
+                            <input type="password" name="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
                         </div>
 
                         <div class="text-center">
@@ -78,7 +72,7 @@
                         </div>
                     </form>
                     <br>
-                    <p style="text-align: center;">Don't have an account? <a style="text-decoration: none;" href="/signup">Register Now</a></p>
+                    {% comment %} <p style="text-align: center;">Don't have an account? <a style="text-decoration: none;" href="/signup">Register Now</a></p> {% endcomment %}
 
                 </div>
             </div>

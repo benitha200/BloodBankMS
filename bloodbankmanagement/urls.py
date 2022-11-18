@@ -25,11 +25,12 @@ urlpatterns = [
 
     
     path('donor/',include('donor.urls')),
-    path('patient/',include('patient.urls')),
+    # path('patients/',include('patients.urls')),
     path('',include('mysite.urls')),
+
     
     # path('',mysite.views.indexall,name='index'),
-    path('logout', LogoutView.as_view(template_name='blood/logout.html'),name='logout'),
+    path('logout', LogoutView.as_view(template_name='site/base.html'),name='logout'),
 
     path('afterlogin', views.afterlogin_view,name='afterlogin'),
     path('adminlogin', LoginView.as_view(template_name='blood/adminlogin.html'),name='adminlogin'),
