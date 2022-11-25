@@ -50,6 +50,7 @@
 
 
 <div class="container">
+  <h2><b>REQUEST STATUS</b></h2>
 <br>
  <br>   
  <div class="row">
@@ -71,7 +72,16 @@
               <td>H-0{{list.hospital_id}}</td>
               <td>{{list.blood_type}}</td>
               <td>{{list.blood_quantity}}</td>
-              <td>{{list.status}}</td>
+              <td>
+                {% if list.status ==  1 %}
+                  <p style="color:green;">ACCEPTED</p>
+                {% elif list.status ==  0 %}
+                  <p style="color:grey;">PENDING ..</p>
+                {% else %}
+                  <p style="color:red;">REJECTED</p>
+
+                  {% endif %}
+              </td>
               </tr>
               {% endfor %}
            

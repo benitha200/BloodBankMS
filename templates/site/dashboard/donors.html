@@ -16,8 +16,10 @@
     <br><br>
 <div class="container">   
 
-  
-  <button class="btn btn-secondary" style="color:white;"><a href='/donors/register-donors'> Add Donors </a></button><br><br>
+  {% if user.groups.first.name == 'Collector' %}
+  <button class="btn btn-secondary" style="color:white;"><a href='/donors/register-donors' style="color:white;"> Add Donors </a></button><br><br>
+  {% endif %}
+
   <table class="table table-bordered">
     <thead>
       <tr>

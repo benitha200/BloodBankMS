@@ -243,7 +243,23 @@ def registerpatients(request):
         phone_number=request.POST.get('phone_number')
         blood_type=request.POST.get('blood_type')
         blood_quantity=request.POST.get('blood_quantity')
-
+        
+        
+        requested = models.HospitalStock.objects.filter(hospital_id = rea)
+        hstock = models.HospitalStock.objects.filter(blood_type= requested.blood_type,hospital_id = hospital)
+        if not hstock:
+            hstockcreate = models.HospitalStock(
+            blood_type = requested.blood_type,
+            blood_quantity = requested.blood_quantity,
+            hospital_id = hospital,
+            
+        )
+        hstockcreate.save()
+    else:
+        hstock = models.HospitalStock.objects.get(blood_type= requested.blood_type,hospital_id = hospital)
+        hstock.blood_quantity= hstock.blood_quantity + requested.blood_quantity
+        hstock.save()
+    
         count_records = models.Patients.objects.count()
 
         if(count_records > 0):
@@ -267,6 +283,8 @@ def registerpatients(request):
             # created_by = request.user.id
 
         )
+        
+        
         patients.save()
         messages.error(request,'patient added successfully')
         return redirect('/patients')
