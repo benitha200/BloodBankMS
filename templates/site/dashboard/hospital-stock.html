@@ -1,0 +1,84 @@
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body> -->
+    {% extends './master.html' %}
+    {% block content %}
+
+    <br><br>
+{% comment %} <div class="container">   
+
+  
+  <a href='/donors/register-donors'> Add Donors </a>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Phone Number</th>
+        <th>Blood Type</th>
+        <th>Blood Quantity</th>
+
+      </tr>
+    </thead>
+    <tbody>
+    
+      {% for list in list %}
+      <tr>
+        <td>{{list.first_name}}</td>
+        <td>{{list.last_name}}</td>
+        <td>{{list.phone_number}}</td>
+        <td>{{list.blood_type}}</td>
+        <td>{{list.blood_quantity}}</td>
+
+      </tr>  
+      {% endfor %}
+      
+     
+      
+    </tbody>
+  </table>
+</div> {% endcomment %}
+
+
+<div class="container">
+<br>
+<h2><b>{{ request.user.first_name}} Stock</b></h2>
+ <br>   
+ <div class="row">
+      <div class="col-12">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">Blood Type</th>
+              <th scope="col">Blood Quantity</th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            
+              {% for list in hstock %}
+              <tr>
+              <td>{{list.blood_type}}</td>
+              <td>{{list.blood_quantity}}</td>
+              </tr>
+              {% endfor %}
+           
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+{% endblock content %}
+<!-- </body>
+</html> -->

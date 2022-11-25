@@ -202,6 +202,7 @@ body{
             {% comment %} RBC Admin {% endcomment %}
             {% if  user.groups.first.name == 'Admin'%}
                 <li><a style="text-decoration:none;" href="/collectors"><i class="fas fa-user"></i>Collectors</a></li>
+                <li><a style="text-decoration:none;" href="/hospitals"><i class="fas fa-user"></i>Hospitals</a></li>
                 <li><a style="text-decoration:none;" href="/blood-requested"><i class="fas fa-sync-alt"></i>Blood Requested</a></li>
                 <li><a style="text-decoration:none;" href="/rbc-stock"><i class="fas fa-hand-holding-water"></i>Blood Stock</a></li>
                 <li><a style="text-decoration:none;" href="/blood-requested-history"><i class="fas fa-hand-holding-water"></i>Request History</a></li>
@@ -213,7 +214,8 @@ body{
             
                 <li><a style="text-decoration:none;" href="/patients"><i class="fas fa-hand-holding-medical"></i>patients</a></li>
                 <li><a style="text-decoration:none;" href="/blood-request"><i class="fas fa-sync-alt"></i>Blood Request</a></li>
-                <li><a style="text-decoration:none;" href=""><i class="fas fa-sync-alt"></i>Achieved</a></li>
+                <li><a style="text-decoration:none;" href="/hospital-stock"><i class="fas fa-sync-alt"></i>Hospital stock</a></li>
+                <li><a style="text-decoration:none;" href="/hospital-archive"><i class="fas fa-sync-alt"></i>Achieved</a></li>
             {% endif %}
                 {% comment %} <p style="color:skyblue;"> Collectors</p> {% endcomment %}
             {% if user.groups.first.name == 'Collector' %}

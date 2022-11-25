@@ -47,6 +47,7 @@ def hospitallogin(request):
 def signup(request):
      if(request.method=='POST'): 
         first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
         username=request.POST.get('username')
         email=request.POST.get('email')
         password=request.POST.get('password')
@@ -63,7 +64,7 @@ def signup(request):
              if(group.exists):
                 group = Group.objects.get(name="hospital")
                 users = User.objects.create_user(
-                                        first_name=first_name, email=email, password=password, username=username)
+                                        first_name=first_name,last_name=last_name,email=email, password=password, username=username)
                 users.save()
                 users.groups.add(group)
 
@@ -86,20 +87,24 @@ def dashboard(request):
     bloodO0 = models.RbcStock.objects.get(blood_type="O-")
 
     donors = models.Donors.objects.count()
+    # hospitals = User.objects.filter(group__name = 'Hospital').count()
+    group = Group.objects.get(name= 'Collector')
+    hospitals =group.user_set.count()
     totalblood= bloodA1.blood_quantity + bloodA0.blood_quantity +bloodB1.blood_quantity+bloodB0.blood_quantity+bloodAB1.blood_quantity+bloodAB0.blood_quantity+bloodO1.blood_quantity+bloodO0.blood_quantity
 
     bloodrequest = models.HospitalRequests.objects.count()
     approvedrequest = models.HospitalRequests.objects.filter(status =1).count()
 
-    context = {'bloodA1':bloodA1,
+    context = { 'bloodA1':bloodA1,
                 'bloodA0':bloodA0,
                 'bloodAB1':bloodAB1,
-                'bloodA0':bloodAB0,
+                'bloodAB0':bloodAB0,
                 'bloodB1':bloodB1,
-                'bloodA0':bloodB0,
+                'bloodB0':bloodB0,
                 'bloodO1':bloodO1,
                 'bloodO0':bloodO0,
-                'totaldonors':donors, 
+                'totaldonors':donors,
+                'hospitals':hospitals, 
                 'totalblood':totalblood,
                 'bloodrequest':bloodrequest,
                 'approvedrequest':approvedrequest,
@@ -108,9 +113,24 @@ def dashboard(request):
     return render(request,'site/dashboard/dashboard.html',context)
 
 def collectors(request):
-    list= User.objects.filter(group__name ='Collector')
-    context= {'list':list}
+
+    # group = Group.objects.get(name='Collector')
+    # list = group.user_set.all()
+    # list= User.objects.filter(group__name ='Collector')
+    # context= {'list':list}
     return render(request,'site/dashboard/collectors.html',context)
+
+def collector(request):
+    group = Group.objects.get(name= 'Collector')
+    collectors =group.user_set.all()
+    context= {'collectors':collectors} 
+    return render(request,'site/dashboard/collector.html',context)
+
+def hospitals(request):
+    group = Group.objects.get(name= 'Hospital')
+    hospital =group.user_set.all()
+    context= {'hospital':hospital} 
+    return render(request,'site/dashboard/hospital.html',context)
 
 
 def registercollectors(request):
@@ -208,7 +228,7 @@ def collectors(request):
 
 
 def patients(request):
-    list = models.Patients.objects.all()
+    list = models.Patients.objects.filter(hospital = request.user.username)
     context= {'list':list}
     return render(request,'site/dashboard/patients.html',context)
 
@@ -264,7 +284,7 @@ def rbcstock(request):
 
 def bloodrequest(request):
 
-    requests = models.HospitalRequests.objects.all()
+    requests = models.HospitalRequests.objects.filter(hospital_id = request.user.id)
     context = {'requests':requests}
     return render(request,'site/dashboard/blood-request.html',context)
 
@@ -305,7 +325,7 @@ def hospitalrequest(request):
     else:
         return render(request, 'site/forms/hospital-request-form.html')
 
-def accept(request,id):
+def accept(request,id,hospital):
     requested =models.HospitalRequests.objects.get(id = id)
     requested.status = 1
     stock = models.RbcStock.objects.get(blood_type= requested.blood_type)
@@ -315,12 +335,39 @@ def accept(request,id):
     # else:
     stock.blood_quantity = stock.blood_quantity - requested.blood_quantity
     stock.save()
+    
+    hstock = models.HospitalStock.objects.filter(blood_type= requested.blood_type,hospital_id = hospital)
+    if not hstock:
+        hstockcreate = models.HospitalStock(
+            blood_type = requested.blood_type,
+            blood_quantity = requested.blood_quantity,
+            hospital_id = hospital,
+            
+        )
+        hstockcreate.save()
+    else:
+        hstock = models.HospitalStock.objects.get(blood_type= requested.blood_type,hospital_id = hospital)
+        hstock.blood_quantity= hstock.blood_quantity + requested.blood_quantity
+        hstock.save()
+
     requested.save()
     return redirect('/blood-requested')
 
-def reject(request,id):
+def reject(request,id,hospital):
     requested = models.HospitalRequests.objects.get(id= id)
     requested.status = 2
     requested.save()
     return redirect('/blood-requested')
+
+
+def hostock(request):
+    hstock = models.HospitalStock.objects.filter(hospital_id = request.user.id)
+    context = {'hstock': hstock}
+    return render(request,'site/dashboard/hospital-stock.html',context)
+
+def hospitalarchive(request):
+    requests = models.HospitalRequests.objects.filter(hospital_id = request.user.id)
+    context = {'requests':requests}
+    return render(request,'site/dashboard/hospital-archive.html',context)
+
     
