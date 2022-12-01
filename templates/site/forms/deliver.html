@@ -1,0 +1,88 @@
+{% extends './master.html' %}
+{%load static%}
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Blood Bank Management System</title>
+    <link rel="shortcut icon" href="assets/images/fav.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css?family=Merriweather&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="assets/images/fav.jpg">
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.css">
+ 
+    <! Font special for pages-->
+    {% comment %} <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet"> {% endcomment %}
+
+{% comment %} </head> {% endcomment %}
+<body>
+
+    {% block content %}
+
+    <br>
+
+    <h2 style="margin-left:40%;"> Fill the Form To Deliver <h2>
+<div class="container">   
+
+  
+    <div class="card-body" style="margin-top:30px;">
+        <form method="POST" style="
+        width: 70%;
+        margin: auto;
+        background-color: smokewhite;
+        {% comment %} opacity:0.6; {% endcomment %}
+        {% comment %} position: absolute; {% endcomment %}
+        {% comment %} transform: translate(-50%,-50%); {% endcomment %}
+        {% comment %} top: 50%;{% endcomment %}
+        color: black; 
+        border-radius: 2px;
+        padding-top:20px;
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255,255,255,0.1);
+        box-shadow: 0 0 40px rgba(8,7,16,0.6);
+        padding: 50px 35px;">
+            {% csrf_token %}
+
+            
+            <div class="input-group mb-3">
+                <div class = 'label' style="font-size :20px; color:grey;">Drone number</div>&nbsp&nbsp
+                <input type="text" name="drone_number" class="form-control" placeholder="Drone Number" aria-label="First Name" aria-describedby="basic-addon1">
+            </div>
+
+            <div class="input-group mb-3">
+                <div class = 'label' style="font-size :20px; color:grey;">Departure Time</div>&nbsp&nbsp
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1"><i class="fas fa-user"></i></span>
+                </div>
+                <input type="time" name="departure_time" class="form-control" placeholder="Departure Time" aria-label="Departure time" aria-describedby="basic-addon1">
+            </div>
+
+            <div class="input-group mb-3">
+                <div class = 'label' style="font-size :20px; color:grey;">Expected Time</div>&nbsp&nbsp
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1"><i class="fas fa-user"></i></span>
+                </div>
+                <input type="time" name="expected_time" class="form-control" placeholder="Expected Time " aria-label="Expected time" aria-describedby="basic-addon1">
+            </div>
+            
+
+            <div class="text-center">
+                <button class="btn btn--radius-2 btn-danger btn-block" type="submit">Save </button>
+            </div>
+        </form>
+        <br>
+    </div>
+{% endblock content %}
+<!-- </body>
+</html> -->
+
+
+
+
+
+
+
+
