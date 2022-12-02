@@ -22,9 +22,11 @@ urlpatterns = [
     path('patients/register-patients/',views.registerpatients,name="Register Patients"),
     path('blood-request/', views.bloodrequest,name="bloodrequest"),
     path('blood-requested/', views.bloodrequested,name="bloodrequest"),
+    path('blood-received/', views.bloodreceived,name="bloodreceived"),
     path('blood-to-be-delivered/', views.bloodtobedelivered,name="bloodtobedelivered"),
     path('blood-requested-history/', views.bloodrequestedhistory,name="bloodrequest"),
     path('blood-requested/accept/<int:id>/<int:hospital>', views.accept,name="accept"),
     path('blood-requested/reject/<int:id>/<int:hospital>', views.reject,name="reject"),
-    path('blood-to-be-delivered/deliver/<int:id>/<int:hospital>/<int:blood_quantity>', views.deliver,name="deliver"),
+    path('blood-received/received/<int:id>/<int:hospital>/<int:request_id>', views.received,name="received"),
+    path('blood-to-be-delivered/deliver/<int:id>/<int:hospital>/<int:blood_quantity>/<str:blood_type>', views.deliver,name="deliver"),
 ]

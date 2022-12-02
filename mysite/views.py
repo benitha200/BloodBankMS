@@ -7,6 +7,7 @@ from django.db.models import Q
 from django.shortcuts import HttpResponseRedirect, redirect, render
 import datetime
 from . import models
+from django.http import HttpResponse
 
 
 def indexall(request):
@@ -133,7 +134,7 @@ def collectors(request):
     # list = group.user_set.all()
     # list= User.objects.filter(group__name ='Collector')
     # context= {'list':list}
-    return render(request,'site/dashboard/collectors.html',context)
+    return render(request,'site/dashboard/collectors.html')
 
 def collector(request):
     group = Group.objects.get(name= 'Collector')
@@ -257,19 +258,13 @@ def registerpatients(request):
         body_weight = request.POST.get('body_weight')
         phone_number=request.POST.get('phone_number')
         blood_type=request.POST.get('blood_type')
-        blood_quantity = request.POST.get('blood_quantity')
-
+        blood_quantity=request.POST.get('blood_quantity')
+        
+        
+        # requested = models.HospitalStock.objects.filter(hospital_id = request.user.id)
+      
+    
         count_records = models.Patients.objects.count()
-
-        stock = models.HospitalStock.objects.filter(hospital_id = request.user.id).filter(blood_type = blood_type)
-
-        if stock.blood_quantity < blood_quantity :
-            messages.error(request,'insufficient stock')
-        elif (stock.blood_quantity - blood_quantity) < 1000 :
-            messages.error(request,' stock can\'t be below 1000')
-        else:
-            stock.blood_quantity = stock.blood_quantity - blood_quantity
-
                     
         if(count_records > 0):
             pat = models.Patients.objects.all().order_by('-id')[0]
@@ -292,9 +287,25 @@ def registerpatients(request):
             # created_by = request.user.id
 
         )
-        patients.save()
-        messages.error(request,'patient added successfully')
-        return redirect('/patients')
+
+        hstock = models.HospitalStock.objects.get(blood_type= blood_type,hospital_id = request.user.id)
+        if hstock:
+            hstock = models.HospitalStock.objects.get(blood_type=blood_type,hospital_id = request.user.id)
+            # hstock.blood_quantity= hstock.blood_quantity + requested.blood_quantity
+            # hstock.save()
+            if hstock.blood_quantity < int(blood_quantity) :
+                messages.error(request,'insufficient stock')
+                return HttpResponse("<script>alert('insufficient stock'); history.back();</script>")
+            elif (hstock.blood_quantity - int(blood_quantity) )< 1000 :
+                # messages.error(request,' stock can\'t be below 1000')
+                return HttpResponse("<script>alert('stock can t be below 1000'); history.back();</script>")
+            else:
+                hstock.blood_quantity = hstock.blood_quantity - int(blood_quantity)
+                hstock.save()
+                patients.save()
+                messages.error(request,'patient added successfully')
+                return redirect('/patients')
+                
     else:
         return render(request, 'site/forms/register-patients.html')
     
@@ -324,6 +335,12 @@ def bloodtobedelivered(request):
     requests = models.HospitalRequests.objects.filter(status=1)
     context = {'requests':requests}
     return render(request,'site/dashboard/blood-to-be-delivered.html',context)
+
+def bloodreceived(request):
+
+    requests = models.BloodDistribution.objects.filter(status=0,hospital_id = request.user.id)
+    context = {'requests':requests}
+    return render(request,'site/dashboard/blood-received.html',context)
 
 def bloodrequestedhistory(request):
 
@@ -391,6 +408,41 @@ def reject(request,id,hospital):
     return redirect('/blood-requested')
 
 
+def received(request,id,hospital,request_id):
+    requested = models.HospitalRequests.objects.get(id = request_id)
+    requested.status = 4
+    requested.save()
+
+
+
+    # update rbc stock
+    blood_type = models.HospitalRequests.objects.get(id = request_id)
+    d= models.RbcStock.objects.get(blood_type = blood_type.blood_type)
+    d.blood_quantity = d.blood_quantity + int(requested.blood_quantity)
+    d.save()
+
+    #update hospital stock
+
+    stock = models.RbcStock.objects.get(blood_type= requested.blood_type)
+    stock.blood_quantity = stock.blood_quantity - requested.blood_quantity
+    stock.save()
+    
+    hstock = models.HospitalStock.objects.filter(blood_type= requested.blood_type,hospital_id = hospital)
+    if hstock:
+    
+        hstock = models.HospitalStock.objects.get(blood_type= requested.blood_type,hospital_id = hospital)
+        hstock.blood_quantity= hstock.blood_quantity + requested.blood_quantity
+        hstock.save()
+
+    # update distribution status
+    distributed = models.BloodDistribution.objects.get(id = id)
+    distributed.status = 1
+    distributed.save()   
+    
+
+    return redirect('/blood-received')
+
+
 def hostock(request):
     hstock = models.HospitalStock.objects.filter(hospital_id = request.user.id)
     context = {'hstock': hstock}
@@ -401,7 +453,7 @@ def hospitalarchive(request):
     context = {'requests':requests}
     return render(request,'site/dashboard/hospital-archive.html',context)
 
-def deliver(request,hospital,id,blood_quantity):
+def deliver(request,hospital,id,blood_quantity,blood_type):
      
     if(request.method=='POST'):
         drone_number=request.POST.get('drone_number')
@@ -411,42 +463,26 @@ def deliver(request,hospital,id,blood_quantity):
         
 
         distribution= models.BloodDistribution(
+            request_id = id,
+            blood_type = blood_type,
             blood_units = blood_quantity,
             hospital_id= hospital,
             drone_number= drone_number,
             departure_date= datetime.date.today(),
             departure_time = departure_time,
             expected_time= expected_time,
+            status = 0,
 
         )
 
         # update rbc stock
-        blood_type = models.HospitalRequests.objects.get(id=id)
-        d= models.RbcStock.objects.get(blood_type = blood_type.blood_type)
-        d.blood_quantity = d.blood_quantity + int(blood_quantity)
-        d.save()
+        # blood_type = models.HospitalRequests.objects.get(id=id)
+        # d= models.RbcStock.objects.get(blood_type = blood_type.blood_type)
+        # d.blood_quantity = d.blood_quantity + int(blood_quantity)
+        # d.save()
 
         requested =models.HospitalRequests.objects.get(id = id)
         requested.status = 3
-        stock = models.RbcStock.objects.get(blood_type= requested.blood_type)
-     
-        stock.blood_quantity = stock.blood_quantity - requested.blood_quantity
-        stock.save()
-    
-        hstock = models.HospitalStock.objects.filter(blood_type= requested.blood_type,hospital_id = hospital)
-        if not hstock:
-            hstockcreate = models.HospitalStock(
-            blood_type = requested.blood_type,
-            blood_quantity = requested.blood_quantity,
-            hospital_id = hospital,
-            
-            )
-            hstockcreate.save()
-        else:
-            hstock = models.HospitalStock.objects.get(blood_type= requested.blood_type,hospital_id = hospital)
-            hstock.blood_quantity= hstock.blood_quantity + requested.blood_quantity
-            hstock.save()
-
         requested.save()
 
         distribution.save()

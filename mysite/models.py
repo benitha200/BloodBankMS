@@ -68,10 +68,13 @@ class HospitalRequests(models.Model):
 class BloodDistribution(models.Model):
     blood_units = models.IntegerField()
     hospital_id = models.IntegerField()
+    request_id = models.IntegerField()
+    blood_type = models.CharField(max_length=10)
     drone_number = models.CharField(max_length= 10)
     departure_date = models.CharField(max_length= 10, default = datetime.date.today())
     departure_time = models.CharField(max_length= 10)
     expected_time = models.CharField(max_length = 10)
+    status = models.IntegerField()
 
     class Meta:
         db_table = "blood_distribution"

@@ -197,11 +197,13 @@ body{
         
         <ul>
           {% if user.is_authenticated %}
-          <li><a style="text-decoration:none;" href="/dashboard"><i class="fas fa-home"></i>Dashboard</a></li>
+
             
             {% comment %} RBC Admin {% endcomment %}
             {% if  user.groups.first.name == 'Admin'%}
+                <li><a style="text-decoration:none;" href="/dashboard"><i class="fas fa-home"></i>Dashboard</a></li>
                 <li><a style="text-decoration:none;" href="/collectors"><i class="fas fa-user"></i>Collectors</a></li>
+                <li><a style="text-decoration:none;" href="/donors"><i class="fas fa-hand-holding-medical"></i>Donors</a></li>  
                 <li><a style="text-decoration:none;" href="/hospitals"><i class="fas fa-user"></i>Hospitals</a></li>
                 <li><a style="text-decoration:none;" href="/blood-requested"><i class="fas fa-sync-alt"></i>Blood Requested</a></li>
                 <li><a style="text-decoration:none;" href="/blood-to-be-delivered"><i class="fas fa-sync-alt"></i>Blood To Be Delivered</a></li>
@@ -215,14 +217,17 @@ body{
             
                 <li><a style="text-decoration:none;" href="/patients"><i class="fas fa-hand-holding-medical"></i>patients</a></li>
                 <li><a style="text-decoration:none;" href="/blood-request"><i class="fas fa-sync-alt"></i>Blood Request</a></li>
+                <li><a style="text-decoration:none;" href="/hospital-archive"><i class="fas fa-sync-alt"></i>Request Status</a></li>
+                <li><a style="text-decoration:none;" href="/blood-received"><i class="fas fa-sync-alt"></i>Blood Received</a></li>
                 <li><a style="text-decoration:none;" href="/hospital-stock"><i class="fas fa-sync-alt"></i>Hospital stock</a></li>
-                <li><a style="text-decoration:none;" href="/hospital-archive"><i class="fas fa-sync-alt"></i>Achieved</a></li>
+         
             {% endif %}
                 {% comment %} <p style="color:skyblue;"> Collectors</p> {% endcomment %}
             {% if user.groups.first.name == 'Collector' %}
                                            <!-- collector -->
+                <li><a style="text-decoration:none;" href="/dashboard"><i class="fas fa-home"></i>Dashboard</a></li>
                 <li><a style="text-decoration:none;" href="/donors"><i class="fas fa-hand-holding-medical"></i>Donors</a></li>
-                <li><a style="text-decoration:none;" href="/donors"><i class="fas fa-history"></i>History</a></li> 
+                {% comment %} <li><a style="text-decoration:none;" href="/donors"><i class="fas fa-history"></i>History</a></li>  {% endcomment %}
             {% endif %}
           
           {% endif %}
